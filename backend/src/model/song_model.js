@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
+
+
 // const IArtist={
 //     artistName:"",
 //     artistImage:""
 // }
 
 // interface ICredit {
-//     title:string;
-//     performedBy:string[];
+//     title:String;
+//     performedBy:String[];
 //     writtenBy:String[];
 //     producedBy:String[];
 //     source:String;
@@ -23,14 +25,13 @@ export const CreditSchema = new mongoose.Schema({
 
 export const SongSchema = new mongoose.Schema(
   {
-    songTitle: { type: string, required: true },
-    track: { type: string, required: true }, //sound file : for now String, need to work on it later on
+    songTitle: { type: String, required: true },
+    track: { type: String, required: true }, //sound file : for now String, need to work on it later on
     artist: {
-      type: [string] | [mongoose.Types.ObjectId],
-      ref: "user",
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     }, // we can fetch it from the usermodel(_id) itself as artist will also be a user on the app
-    thumbnail: { type: string, required: true },
+    thumbnail: { type: String, required: true },
     meta: { type: CreditSchema, required: false },
   },
   { timestamps: true },
@@ -39,4 +40,4 @@ export const SongSchema = new mongoose.Schema(
 export const SongModel = new mongoose.model("Songs", SongSchema, "song");
 
 
-export default { SongModel, SongSchema };
+export default SongModel;

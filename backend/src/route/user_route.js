@@ -3,13 +3,14 @@ import { UserSchema, UserModel } from "../model/user_model.js";
 import bcrypt from "bcrypt";
 import { getToken } from "../util/generate_token_util.js";
 import mongoose from "mongoose";
+import passport from 'passport';
 import { loginController } from "../controller/login_controller.js";
 
 const platformRouter = new Router();
 
 platformRouter.post("/login", loginController);
 
-platformRouter.post("/signup", async (req, res, next) => {
+platformRouter.post("/signup",async (req, res, next) => {
   //My req.body will be of the format {email, password,firstname, lastname, dob,username}
   const { email, password, firstname, lastname, DOB, username } = req.body;
 

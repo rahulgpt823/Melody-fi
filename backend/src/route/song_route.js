@@ -4,17 +4,17 @@
  */
 
 import { Router } from "express";
-import { SongModel, SongSchema } from "../model/song_model.js";
+import passport from 'passport';
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 
-import { songController } from "../controller/song_controller.js";
-
+import * as  songController  from "../controller/song_controller.js";
 const songRouter = new Router();
 
-songRouter.post("/", songController);
-songRouter.get("/", songController);
-songRouter.get("/:songId", songController);
-songRouter.put("/:songId", songController);
-songRouter.delete("/global", songController);
-songRouter.delete("/:songId", songController);
+songRouter.post("/",passport.authenticate("jwt",{session:false}), songController.uploadASong);
+songRouter.get("/", songController.getAllSong);
+songRouter.get("/:songId", songController.getASong);
+songRouter.put("/:songId", songController.updateASong);
+songRouter.delete("/global", songController.deleteAllSong);
+songRouter.delete("/:songId", songController.deleteASong);
 
-export default platformRouter;
+export default songRouter;

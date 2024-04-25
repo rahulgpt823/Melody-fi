@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import platformRouter from "./route/user_route.js";
+import { jwtStrategy } from "./integration/user_authentication.js";
+import songRouter from "./route/song_route.js";
+import passport from 'passport';
 dotenv.config();
 
 const app = express();
@@ -23,6 +26,9 @@ mongoose
     console.log("mongoDB failed to connect : ", err);
   });
 
+  // Initialize Passport middleware
+app.use(passport.initialize());
+
 app.get("/health", (req, res, next) => {
   console.log("health check done");
   res.send("API is working fine");
@@ -36,6 +42,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/platform", platformRouter);
+// req.user gets the user because of passport.authenticate
 app.use("/song", songRouter);
 
 app.listen(8080, () => {
