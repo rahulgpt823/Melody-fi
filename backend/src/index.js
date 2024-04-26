@@ -5,6 +5,7 @@ import platformRouter from "./route/user_route.js";
 import { jwtStrategy } from "./integration/user_authentication.js";
 import songRouter from "./route/song_route.js";
 import passport from 'passport';
+import playlistRouter from "./route/playlist_route.js";
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,7 @@ mongoose
   // Initialize Passport middleware
 app.use(passport.initialize());
 
+
 app.get("/health", (req, res, next) => {
   console.log("health check done");
   res.send("API is working fine");
@@ -44,6 +46,7 @@ app.get("/", (req, res, next) => {
 app.use("/platform", platformRouter);
 // req.user gets the user because of passport.authenticate
 app.use("/song", songRouter);
+app.use("/playlist", playlistRouter);
 
 app.listen(8080, () => {
   console.log("listen on port 8080");

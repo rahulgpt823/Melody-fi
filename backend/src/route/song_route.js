@@ -5,8 +5,6 @@
 
 import { Router } from "express";
 import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-
 import * as  songController  from "../controller/song_controller.js";
 const songRouter = new Router();
 

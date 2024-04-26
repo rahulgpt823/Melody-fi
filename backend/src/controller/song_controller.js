@@ -68,12 +68,12 @@ const currentUser =req.user;
 
 
 export const deleteASong = async (req, res) => {
-  const songid = req.params.songId;
   const toDeleteSong = req.params.songId;
-  const song = await SongModel.deleteOne({ toDeleteSong });
+  const song = await SongModel.deleteOne({ _id: toDeleteSong });
   if (!song) {
     return res.status(403).json("Song not present or already deleted");
   }
+  
   res.status(200).json(song);
 };
 
@@ -81,7 +81,7 @@ export const deleteAllSong = async (req, res) => {
   // To return all the song .
   //Need to validate the user before user can access the file
  
-  const song = await SongModel.delete({});
+  const song = await SongModel.deleteMany({});
   if (!song.length) {
     return res
       .status(403)
