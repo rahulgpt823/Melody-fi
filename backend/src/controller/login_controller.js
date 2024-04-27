@@ -4,9 +4,10 @@
  * To return the token : autherizing user to access the further service
  */
 
-import { UserModel, UserSchema } from "../model/user_model.js";
+import  UserModel from "../model/user_model.js";
 import { getToken } from "../util/generate_token_util.js";
 import bcrypt from "bcrypt";
+
 
 // Step 1:
 

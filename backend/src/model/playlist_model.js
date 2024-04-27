@@ -5,20 +5,21 @@ import mongoose from "mongoose";
 //     artistImage:""
 // }
 
-export const playlistMetaSchema = new Schema ({
+export const playlistMetaSchema = new mongoose.Schema ({
    timeline:{type:String , required:false},
     likes:{type:[String] , required:false,},
-    songList:{type:[mongoose.Types.ObjectId] , ref: "Songs",default:[]},
-   collabarator:{type:[String] , required:false},
+    songList:{type:[String] , ref: "Songs",default:[]},
+   collaborator:{type:[String] , required:false},
 })
 
 export const PlaylistSchema = new mongoose.Schema({
     playlistTitle:{type:String , required:true},
     thumbnail:{type:String , required:true},
-    createdBy:{type:mongoose.Types.ObjectId , ref: "User",},
-    likes:{type:string,required:false},
-    totalSong:{type:string,required:false,default:"null"},
-    meta:{type:playlistMetaSchema},
+    //createdBy:{type:mongoose.Types.ObjectId , ref: "User",},
+    createdBy:{type:String, required:false},
+    likes:{type:[String],required:false},
+    totalSong:{type:[String],required:false,default:"null"},
+    meta:{type:playlistMetaSchema, required:false},
 
 })
 

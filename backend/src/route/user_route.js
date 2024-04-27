@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserSchema, UserModel } from "../model/user_model.js";
+import UserModel,{UserSchema} from "../model/user_model.js";
 import bcrypt from "bcrypt";
 import { getToken } from "../util/generate_token_util.js";
 import mongoose from "mongoose";

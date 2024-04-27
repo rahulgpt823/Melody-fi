@@ -1,6 +1,12 @@
-import PlaylistModel from "../model/playlist_model.js";
-import { Types } from "mongoose";
+
+import PlaylistModel, { PlaylistSchema } from "../model/playlist_model.js";
+import UserModel from "../model/user_model.js";
 import passport from "passport";
+import express from 'express';
+import mongoose,{Types} from 'mongoose';
+
+import SongModel,{SongSchema} from "../model/song_model.js";
+
 
 
 
@@ -15,32 +21,32 @@ export const getAPlaylist = async (req, res) => {
 };
 
 export const getAllPlaylist = async (req, res) => {
-  // To return all the song .
+  // To return all the playlist .
   //Need to validate the user before user can access the file
-  const song = await SongModel.find({});
-  if (!song.length) {
+  const playlist = await PlaylistModel.find({});
+  if (!playlist.length) {
     return res
       .status(403)
-      .json("No Songs Found. Waiting for Songs to get upload");
+      .json("No playlist Found. Waiting for playlist to get created");
   }
-  console.log("List of songs has been generated.");
-  res.status(200).json(song);
+  console.log("List of Playlist has been generated.");
+  res.status(200).json(playlist);
 };
 
 
 //POST request
 export const createAPlaylist = async (req, res) => {
   // post request
-const currentUser =req.user;
+//const currentUser =req.user;
   // Array to store the names of missing fields
   const missingFields = [];
 
-  const { playlistTitle, songList,thumbnail, } = req.body;
+  const { playlistTitle, createdBy, thumbnail, likes, totalSong, meta} = req.body;
   if (!playlistTitle) {
     missingFields.push("playlistTitle");
   }
-  if (!songlist) {
-    missingFields.push("track");
+  if (!createdBy) {
+    missingFields.push("createdBy");
   }
 
   if (!thumbnail) {
@@ -58,19 +64,22 @@ const currentUser =req.user;
    */
 
   const playlistData = {
-    playlistTitle,
-    thumbnail,
-    createdBy:req.user._id,
-    meta:{
-        songlist:[]
-    },
+    playlistTitle:playlistTitle,
+    thumbnail:thumbnail,
+    createdBy:createdBy, //req.user._id,
+    likes:likes,
+    totalSong:totalSong,
+    meta:meta,
 
-  }
-  const playlist = await playlist.create({ playlistData});
-  if (!playlist) {
-    return res.status(403).json("platylist not present");
-  }
+  };
+  try{
+  const playlist = await PlaylistModel.create(playlistData);
   res.status(200).json(playlist);
+  }catch(error){
+    console.error("Error creating playlist:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+ 
 
 }
 
@@ -132,7 +141,89 @@ export const updateAPlaylist = async(req,res)=>{
 
 
 //Get all playlist made by an artist 
+export const playlistByArtist = async (req, res) => {
+  try {
+      const artistId = req.params.userId;
+
+      // Validate if the artist is present or not
+      const checkArtistExist = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(artistId) });
+      if (!checkArtistExist) {
+          console.log("Artist not present. Kindly check if you are signed up.");
+          return res.status(404).json({ message: "Artist not found" });
+      }
+
+      const artistPlaylists = await PlaylistModel.find({ createdBy: artistId });
+      if (!artistPlaylists.length) {
+          return res.status(403).json({ message: `No playlists found for artist with ID: ${artistId}` });
+      }
+
+      console.log("List of all playlists has been generated.");
+      res.status(200).json(artistPlaylists);
+  } catch (error) {
+      console.error("Error:", error.message);
+      res.status(500).json({ error: error.message });
+  }
+};
+                                                                                                                                                                                                                                                                        
+  
+
+//Add a song to  a playlist
 
 
-//Add a song ot a playlist
+
+export const addSongToPlaylist = async (req, res) => {
+  try {
+  const{playlistId, songIds} = req.body;
+    
+      // Convert playlistId and songIds to ObjectId
+      const playlistObjectId = new Types.ObjectId(playlistId);
+      const songObjectIds = songIds.map(songId =>  new Types.ObjectId(songId));
+
+      // Find the playlist
+      const playlist = await PlaylistModel.findOne({ _id: playlistObjectId });
+      if (!playlist) {
+          console.log("Playlist not found");
+          return;
+      }
+
+      // Check if the songs are valid
+      const invalidSongs = [];
+      for (const songId of songObjectIds) {
+          const exists = await SongModel.exists({ _id: songId });
+          if (!exists) {
+              invalidSongs.push(songId);
+          }
+      }
+
+      // If any invalid songs are found, return an error
+      if (invalidSongs.length > 0) {
+          console.log(`The following songs are not found: ${invalidSongs.join(", ")}`);
+          
+      }
+
+      // Filter out the song IDs that are already in the playlist
+      const newSongIds = songObjectIds.filter(songId => !playlist.meta.songList.includes(songId));
+      // If no new songs to add, return a message
+      if (newSongIds.length === 0) {
+          console.log("All songs are already in the playlist");
+          return res.status(200).json({message: "song already added to  playlist"});
+      }
+
+            // Check if thumbnail is set; if not, set a default or ensure your playlist creation logic handles it
+            if (!playlist.thumbnail) {
+              playlist.thumbnail = "default_thumbnail.jpg"; // Set a default thumbnail if none provided
+          }
+
+      // Add the new song IDs to the playlist's songList
+      playlist.meta.songList.push(...newSongIds);
+      await playlist.save();
+
+      console.log(`Songs ${newSongIds.join(", ")} have been added to the playlist`);
+      res.status(200).json({message:"Songs has been added to playlist"})
+  } catch (error) {
+      console.error("Error:", error.message);
+  }
+};
+     
+        
 
