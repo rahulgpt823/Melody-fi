@@ -8,5 +8,6 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [ { "autoprefixer": "^9.8.8",
+  "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"}],
 }

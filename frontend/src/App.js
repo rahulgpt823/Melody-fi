@@ -8,6 +8,7 @@ import {
   Link,
   BrowserRouter,
 } from "react-router-dom";
+import './output.css'
 // Beowser router act as a wrapper so all the route we need to add shuld go inside it 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         </Route>
         <Route path="/" element ={<div>This is the main page.</div>} />
         <Route path="/home" element ={<HomeComponent />} />
+        <Route path="/test" element ={<div className="bg-yellow-200">testing the tailwind.</div>} />
         </Routes>
       
       </ BrowserRouter> 
@@ -32,7 +34,7 @@ function App() {
 
 }
  const HomeComponent=()=>{ // funct
-  
+
   return <div>This is the home page </div>;
  };
 export default App;
