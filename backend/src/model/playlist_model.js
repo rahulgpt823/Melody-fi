@@ -14,10 +14,10 @@ export const playlistMetaSchema = new mongoose.Schema ({
 
 export const PlaylistSchema = new mongoose.Schema({
     playlistTitle:{type:String , required:true},
+    description:{type:String},
     thumbnail:{type:String , required:true},
     //createdBy:{type:mongoose.Types.ObjectId , ref: "User",},
     createdBy:{type:String, required:false},
-    likes:{type:[String],required:false},
     totalSong:{type:[String],required:false,default:"null"},
     meta:{type:playlistMetaSchema, required:false},
 
