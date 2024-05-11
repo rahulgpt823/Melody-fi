@@ -3,8 +3,8 @@ import LogoTextInput from '../components/shared/LogoTextInput.jsx'
 import spotify_logo_white from '../assets/images/spotify_logo_white.svg'
 const HomeComponent = () => {
   return (
-    <div className="flex w-full h-full">
-      <div className="w-1/5 h-full bg-black flex flex-col content-center justify-between">
+    <div className="flex w-full h-full overflow-auto">
+      <div className="w-1/6  bg-black flex flex-col content-center justify-between ">
         {/**This is dive of side*/}
         <div className="logoDiv py-3 px-5  flex content-center  justify-center">
           <img src={spotify_logo_white} alt={'spotify_logo'} width={100} />
@@ -50,13 +50,13 @@ const HomeComponent = () => {
         </div>
       </div>
 
-      <div className="w-4/5 h-full flex flex-col">
+      <div className="w-4/5 h-full flex-1 flex-col">
         {/**This is dive of nav component*/}
         <div className="h-1/10 bg-app-onyx flex items-center justify-between text-white px-4">
           {/**
            * this is navbar
            */}
-          <div className="text-6xl flex gap-4  text-gray-600 justify-between">
+          <div className="text-6xl flex gap-4  text-black justify-between">
             <p>{`<`}</p>
             <p>{`>`}</p>{' '}
           </div>
@@ -98,28 +98,50 @@ const HomeComponent = () => {
             </button>
           </div>
         </div>
-        <div className=" h-9/10 bg-gray-500 flex flex-col text-black text-lg font-normal ">
-          {/**This is content page*/}
-          <div className="h-1/10 w-full flex justify-between p-2 ">
-            {/** `${palylist_title}`*/}
-            <p className="cursor-pointer">Playlist</p>
-            <p className='cursor-pointer'>show all</p>
+        <div className=" h-9/10 bg-gray-600 flex-1 flex-col text-black text-lg font-normal overflow-auto ">
+        <PageView palylist_title="Weekend Gateway" cardData={[{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"}]} />
+         <PageView palylist_title="Lo-fi Vibe..." cardData={[{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"}]}/>
+          <PageView palylist_title="Metrooooo" cardData={[{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"},{title:"Weekend Special",description:"Hear all your Weekend favorite hits!! enjoy the beats", imgLink:"https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png"}]} />
           </div>
-          {/**This is content page*/}
-          <div className="h-9/10  bg-gray-600 w-full flex p-4">
-            <CardComponent />
-          </div>
-        </div>
       </div>
     </div>
   )
 }
 export default HomeComponent
 
-const CardComponent = (title, description, imgLink) => {
-  return <div className="w-1/6 h-1/2 border-2 rounded-lg flex flex-col ">
-    <img className="h-2/3 w-full rounded-md" src="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" alt="poster" />
-    <div className="font-semibold text-base flex m-1 text-white">{/**Title */}Weekend Special </div>
-    <div className="font-semibold text-xs flex-col p-1 inline-flex text-white ">{/**Descption */}Hear all your Weekend favorite hits!! enjoy the soulful mix </div>
-    </div>
+const CardComponent = ({title, description, imgLink}) => {
+  return (<div className=" h-1/2 w-1/6  rounded-lg flex flex-col  border-black bg-gray-700 m-4 p-4 overflow-hidden">
+    <img className=" rounded-md w-60 " src={imgLink} alt="poster" />
+    <div className="font-semibold text-base flex mt-4 text-white px-1">{/**Title */}{title}</div>
+    <div className="font-normal text-xs  text-white leading-relaxed text-left p-2  break-words my-2 ">{/**Descption */}{description} </div>
+    </div>)
+}
+
+const PageView=({palylist_title,cardData})=>{
+   return(
+    <div className=" page">
+   <div className=" h-1/10 w-full flex justify-between p-6 ">
+            {/** `${palylist_title}`*/}
+            <p className="cursor-pointer">{palylist_title}</p>
+            <p className='cursor-pointer'>show all</p>
+          </div>
+          <div className="h-9/10 bg-gray-600 w-full flex flex-wrap justify ">
+           { cardData.map(item => (<CardComponent title = {item.title}description={item.description} imgLink={item.imgLink}/>))}
+            {/* <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" /> */}
+            {/* <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" />
+            <CardComponent title="Weekend Special"description="Hear all your Weekend favorite hits!! enjoy the beats" imgLink="https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png" /> */}
+            
+          </div>
+          </div>
+          )
 }
